@@ -1,6 +1,17 @@
 import socket
 
 
+def get_service_name(port):
+    """
+    Return the standard service name associated with a TCP port.
+    If the service is unknown, return 'unknown'.
+    """
+    try:
+        return socket.getservbyport(port, "tcp")
+    except OSError:
+        return "unknown"
+
+
 def scan_port(host, port):
     """
     Attempt to connect to a given port on a host.
@@ -19,7 +30,7 @@ def scan_port(host, port):
         # Close the socket after the attempt
         s.close()
 
-        # If connection is successful, port is open
+        # If connection is successful, the port is open
         return result == 0
 
     except Exception:
@@ -30,7 +41,7 @@ def scan_port(host, port):
 def main():
     """
     Main function: asks user input and scans a range of ports.
-    Displays only open ports.
+    Displays open ports and their associated services.
     """
     host = input("Enter target IP or domain: ")
     start_port = int(input("Start port: "))
@@ -40,11 +51,12 @@ def main():
 
     open_ports = []
 
-    # Iterate through the given port range
+    # Scan each port in the selected range
     for port in range(start_port, end_port + 1):
         if scan_port(host, port):
-            open_ports.append(port)
-            print(f"[OPEN] Port {port}")
+            service = get_service_name(port)
+            open_ports.append((port, service))
+            print(f"[OPEN] Port {port} ({service})")
 
     # Display summary
     if not open_ports:
