@@ -1,0 +1,8 @@
+Scanning scanme.nmap.org with 50 threads...
+
+[OPEN] Port 22 (ssh)
+       Banner: SSH-2.0-OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.13
+
+[OPEN] Port 80 (http)
+
+Total open ports: 2
